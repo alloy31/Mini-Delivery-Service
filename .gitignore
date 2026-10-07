@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### secret values ###
+.env
+.env.*
+!.env.example
