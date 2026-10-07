@@ -1,10 +1,10 @@
-package com.junhyun.minideliveryservice;
+package com.example.delivery;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MiniDeliveryServiceApplicationTests {
+class DeliveryApplicationTests {
 
     @Test
     void contextLoads() {
