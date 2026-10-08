@@ -15,7 +15,7 @@ Enum user_role{
 
 Table users {
   id bigint [primary key]
-  username varchar [not null]
+  username varchar
   role user_role [not null, default: 'CUSTOMER']
   created_at timestamp
   updated_at timestamp
@@ -26,7 +26,7 @@ Table menus {
   title varchar(100) [not null]
   price decimal(12,2) [not null]
   currency varchar(3) [not null]
-  description varchar [not null]
+  description varchar
   owner_id bigint [not null]
   is_deleted boolean [not null, default: false]
   created_at timestamp
@@ -37,6 +37,7 @@ Enum order_status{
   ORDERED
   PAID
   ACCEPTED
+  COMPLETED
   CANCELED
 }
 
@@ -45,6 +46,8 @@ Table orders {
   menu_id bigint [not null]
   unit_price decimal(12,2) [not null] //주문 당시의 가격 저장
   quantity integer [not null]
+  total_price decimal(12,2) [not null] //주문 당시의 총액 저장
+  currency varchar(3) [not null] //주문 당시의 통화 저장
   user_id bigint [not null]
   status order_status [not null, default: 'ORDERED']
   delivery_address varchar [not null]
