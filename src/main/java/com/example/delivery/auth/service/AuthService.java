@@ -42,7 +42,7 @@ public class AuthService {
         String passwordHash = passwordEncoder.encode(dto.getPassword());
 
         // 회원정보 저장
-        User user = userRepository.save(new User(dto.getRole(), dto.getLoginId()));
+        User user = userRepository.save(new User(dto.getRole(), dto.getUsername()));
 
         // 저장된 회원정보와 credential 연결
         AuthCredential credential = new AuthCredential(user, dto.getLoginId(),passwordHash);
