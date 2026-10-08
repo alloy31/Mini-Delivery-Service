@@ -30,7 +30,7 @@ public class SecurityConfig {
         throws Exception{
 
         http
-                .csrf(AbstractHttpConfigurer::disable) //인증 쿠키를 사용하지 않음으로 csrf 비활성화
+                .csrf(AbstractHttpConfigurer::disable) //인증 쿠키를 사용하지 않음으로 csrf 비활성
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
@@ -40,13 +40,13 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll() //내부에서 오류로 응답처리를 하는 걸 허용
                         .requestMatchers(
                                 HttpMethod.POST,
-                                "/api/auth/signup",
-                                "/api/auth/login"
+                                "/api/v1/auth/signup",
+                                "/api/v1/auth/login"
                         ).permitAll()
                         .requestMatchers(
                                 HttpMethod.GET,
-                                "/api/menus",
-                                "/api/menus/{menuId}"
+                                "/api/v1/menus",
+                                "/api/v1/menus/{menuId}"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
