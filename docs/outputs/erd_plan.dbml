@@ -77,9 +77,3 @@ Ref: users.id < menus.owner_id
 Ref: menus.id < orders.menu_id
 Ref: users.id < orders.user_id
 Ref: orders.id < payments.order_id
-
-
-
-Ref: "payments"."id" <? "payments"."total_price"
-
-Ref: "orders"."delivery_address" ?<> "orders"."created_at"
