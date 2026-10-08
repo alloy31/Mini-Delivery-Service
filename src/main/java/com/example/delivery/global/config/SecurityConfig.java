@@ -1,5 +1,7 @@
 package com.example.delivery.global.config;
 
+import com.example.delivery.global.security.JwtAuthenticationFilter;
+import com.example.delivery.global.security.JwtUtil;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -23,11 +26,11 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtUtil jwtUtil)
         throws Exception{
 
         http
-                .csrf(AbstractHttpConfigurer::disable) //인증 쿠키를 사용하지 않음
+                .csrf(AbstractHttpConfigurer::disable) //인증 쿠키를 사용하지 않음으로 csrf 비활성화
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
@@ -59,6 +62,12 @@ public class SecurityConfig {
                                 )
                         )
                 );
+
+        //JWT 필터를 Security 필터 체인에 등록한다.
+        http.addFilterBefore(
+                new JwtAuthenticationFilter(jwtUtil),
+                UsernamePasswordAuthenticationFilter.class
+        );
 
         return http.build();
     }
