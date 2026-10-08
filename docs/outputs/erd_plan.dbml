@@ -1,0 +1,85 @@
+
+Table auth_credentials {
+  id bigint [primary key]
+  login_id varchar(100) [not null, unique]
+  password_hash varchar(255) [not null]
+  created_at timestamp
+  updated_at timestamp
+  user_id bigint [not null, unique]
+}
+
+Enum user_role{
+  CUSTOMER
+  OWNER
+}
+
+Table users {
+  id bigint [primary key]
+  username varchar [not null]
+  role user_role [not null, default: 'CUSTOMER']
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table menus {
+  id bigint [primary key]
+  title varchar(100) [not null]
+  price decimal(12,2) [not null]
+  currency varchar(3) [not null]
+  description varchar [not null]
+  owner_id bigint [not null]
+  is_deleted boolean [not null, default: false]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Enum order_status{
+  ORDERED
+  PAID
+  ACCEPTED
+  CANCELED
+}
+
+Table orders {
+  id bigint [primary key]
+  menu_id bigint [not null]
+  unit_price decimal(12,2) [not null] //주문 당시의 가격 저장
+  quantity integer [not null]
+  user_id bigint [not null]
+  status order_status [not null, default: 'ORDERED']
+  delivery_address varchar [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Enum payment_status{
+  PENDING
+  SUCCESS
+  FAILED
+  CANCELLED
+  REFUNDED
+}
+
+Table payments {
+  id bigint [primary key]
+  order_id bigint [not null]
+  total_price decimal(12,2) [not null] //총 결제 금액
+  currency varchar(3) [not null]
+  payment_method varchar [not null]
+  status payment_status [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+//FetchType.LAZY 적용 필수
+Ref: users.id - auth_credentials.user_id
+Ref: users.id < menus.owner_id
+Ref: menus.id < orders.menu_id
+Ref: users.id < orders.user_id
+Ref: orders.id < payments.order_id
+
+
+
+Ref: "payments"."id" <? "payments"."total_price"
+
+Ref: "orders"."delivery_address" ?<> "orders"."created_at"
