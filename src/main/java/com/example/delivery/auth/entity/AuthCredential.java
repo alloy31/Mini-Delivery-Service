@@ -23,4 +23,13 @@ public class AuthCredential extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
+    //JPA를 위한 기본 생성자
+    protected AuthCredential(){}
+
+    public AuthCredential(User user, String loginId, String passwordHash){
+        this.user = user;
+        this.loginId = loginId;
+        this.passwordHash = passwordHash;
+    }
+
 }
